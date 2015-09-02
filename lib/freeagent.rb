@@ -1,6 +1,6 @@
 module FreeAgent
   require_relative 'freeagent/client'
-  require_relative 'freeagent/errors'  
+  require_relative 'freeagent/errors'
 
   require_relative 'freeagent/resource'
   require_relative 'freeagent/user'
@@ -19,12 +19,16 @@ module FreeAgent
   require_relative 'freeagent/estimate'
   require_relative 'freeagent/expense'
   require_relative 'freeagent/bank_transaction'
+  require_relative 'freeagent/bank_transaction_explanation'
+  require_relative 'freeagent/bill'
+  require_relative 'freeagent/invoice_item'
+
   class << self
     attr_accessor :environment
     attr_accessor :debug
     attr_reader :client
 
-    def access_details(client_id, client_secret, options=nil)
+    def access_details(client_id, client_secret, options = {})
       @client = Client.new(client_id, client_secret)
       @client.refresh_token = options[:refresh_token] if options[:refresh_token]
       @client.access_token = options[:access_token] if options[:access_token]

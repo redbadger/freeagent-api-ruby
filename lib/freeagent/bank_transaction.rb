@@ -2,16 +2,21 @@ module FreeAgent
   class BankTransaction < Resource
     resource :bank_transaction
 
-    resource_methods :find, :filter 
+    resource_methods :find, :filter
 
-    attr_accessor :bank_account, :description, :is_manual, :bank_transactions_explanations
+    attr_accessor :bank_account, :description, :is_manual, :bank_transaction_explanations
     decimal_accessor :amount, :unexplained_amount
 
     date_accessor :dated_on
 
+    def bank_transaction_explanations
+      return [] if @bank_transaction_explanations.nil?
+      @bank_transaction_explanations.map { |explanation| BankTransactionExplanation.find(extract_id(explanation['url'])) }
+    end
+
     def self.find_all_by_bank_account(bank_account, options = {})
       options.merge!(:bank_account => bank_account)
-      BankTransaction.filter(options) 
+      BankTransaction.filter(options)
     end
 
     def self.unexplained(bank_account, options = {})
